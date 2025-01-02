@@ -27,7 +27,8 @@ class BisnisPageResource extends Resource
             ->schema([
                 Forms\Components\FileUpload::make('image_content')
                     ->columnSpanFull()
-                    ->directory('bisnisBanner'),
+                    ->multiple()
+                    ->directory('bisnisPages'),
             ]);
     }
 
@@ -35,7 +36,9 @@ class BisnisPageResource extends Resource
     {
         return $table
             ->columns([
-                ImageColumn::make('image_content'),
+                ImageColumn::make('image_content')
+                    ->circular()
+                    ->stacked(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

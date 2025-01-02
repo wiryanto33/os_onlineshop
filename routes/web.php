@@ -3,6 +3,7 @@
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Checkout;
+use App\Livewire\DistributorFormPage;
 use App\Livewire\InfoBisnis;
 use App\Livewire\OrderPage;
 use App\Livewire\OrderDetail;

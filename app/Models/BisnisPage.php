@@ -9,4 +9,8 @@ class BisnisPage extends Model
     protected $fillable = [
         'image_content',
     ];
+
+    protected $casts = [
+        'image_content' => 'array',
+    ];
 }

@@ -160,7 +160,8 @@
 @push('scripts')
     <!-- Include Midtrans Snap -->
     <script type="text/javascript"
-        src="https://app.sandbox.midtrans.com/snap/snap.js"
+        {{-- src="https://app.sandbox.midtrans.com/snap/snap.js" --}}
+        src="{{config('services.midtrans.snap_url')}}"
         data-client-key="{{ config('services.midtrans.client_key') }}">
     </script>
 

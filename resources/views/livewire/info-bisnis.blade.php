@@ -11,15 +11,26 @@
 
     <!-- Banner Slider -->
     <div class="pt-20 px-4">
-        <div class="w-full overflow-hidden rounded-xl shadow-md">
-            <div class="swiper-container">
-                <img src="{{ url('/storage/' . $bisnisPages->image_content) }}" alt="Banner 1" class="w-full">
+        @if (!empty($bisnisPages->image_content))
+            <div class="swiper-container rounded-xl overflow-hidden">
+                <div class="swiper-wrapper">
+                    @foreach ($bisnisPages->image_content as $item)
+                        <div class="swiper-slide">
+                            <div class="w-full">
+                                <img src="{{ url('storage/' . $item) }}" alt="Banner"
+                                    class="w-full rounded-xl object-cover">
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
             </div>
-        </div>
+        @else
+            <p class="text-center text-gray-500 mt-4">No images available.</p>
+        @endif
     </div>
 
     <!-- Informasi Bisnis Content -->
-    <div class="mt-3 pb-20 bg-gray-100 min-h-screen">
+    <div class="mt-6 pb-20 bg-gray-100">
         <div class="pt-10 px-6 space-y-6">
             <!-- Business Card -->
             @foreach ($bisnisDetails as $bisnisDetail)
@@ -42,9 +53,9 @@
                                 class="w-24 h-24 object-cover rounded-lg shadow-sm">
 
                             <div class="flex-1">
-                                <div class="mb-3">
+                                <div class="mb-4">
                                     <h4 class="font-medium text-gray-700">Syarat:</h4>
-                                    <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
                                         @foreach ($bisnisDetail->bisnisRules as $bisnisRule)
                                             <li>{{ $bisnisRule->rules }}</li>
                                         @endforeach
@@ -53,7 +64,7 @@
 
                                 <div>
                                     <h4 class="font-medium text-gray-700">Keuntungan:</h4>
-                                    <ul class="list-disc list-inside text-sm text-gray-600">
+                                    <ul class="list-disc list-inside text-sm text-gray-600 space-y-2">
                                         @foreach ($bisnisDetail->bisnisBenefits as $bisnisBenefit)
                                             <li>{{ $bisnisBenefit->benefits }}</li>
                                         @endforeach
@@ -64,15 +75,39 @@
                     </div>
 
                     <!-- Actions -->
-                    <div class="p-5 border-t border-gray-200 bg-gray-50 flex justify-end">
-                        <button
-                            class="px-6 py-2 text-sm font-medium bg-primary text-white rounded-full shadow hover:bg-primary/90 transition-all">
-                            Join Us
-                        </button>
+                    <div class="p-5 border-t border-gray-200 bg-gray-50">
+                        <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
+                            class="flex items-center justify-between p-4 bg-primary rounded-xl hover:bg-primary/90 transition duration-300 max-w-[250px] mx-auto">
+                            <div class="flex items-center gap-3">
+                                <i class="bi bi-telephone text-white"></i>
+                                <span class="text-white">Daftar Via Whatsapp</span>
+                            </div>
+                            <i class="bi bi-chevron-right text-gray-400"></i>
+                        </a>
                     </div>
                 </div>
             @endforeach
         </div>
     </div>
-
 </div>
+
+@push('scripts')
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const swiper = new Swiper('.swiper-container', {
+                loop: true, // Memutar slider
+                autoplay: {
+                    delay: 3000, // Durasi autoplay dalam milidetik
+                    disableOnInteraction: false, // Tetap autoplay setelah interaksi
+                },
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true,
+                },
+                slidesPerView: 1, // Jumlah slide yang terlihat
+                spaceBetween: 10, // Jarak antar slide
+                effect: 'fade', // Efek transisi lebih halus
+            });
+        });
+    </script>
+@endpush

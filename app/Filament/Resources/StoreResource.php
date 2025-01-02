@@ -73,6 +73,10 @@ class StoreResource extends Resource
                                     ->columnSpanFull()
                                     ->multiple()
                                     ->directory('stores/banner'),
+                                Forms\Components\FileUpload::make('info_swiper')
+                                    ->columnSpanFull()
+                                    ->multiple()
+                                    ->directory('stores/swiper'),
                                 Forms\Components\FileUpload::make('advertise')
                                     ->image()
                                     ->directory('stores/advertise'),
@@ -144,6 +148,9 @@ class StoreResource extends Resource
                 Tables\Columns\ImageColumn::make('advertise')
                     ->circular(),
                 Tables\Columns\ImageColumn::make('banner')
+                    ->circular()
+                    ->stacked(),
+                Tables\Columns\ImageColumn::make('info_swiper')
                     ->circular()
                     ->stacked(),
                 Tables\Columns\TextColumn::make('whatsapp')

@@ -16,7 +16,7 @@ class StoreShow extends Component
     public $products;
 
     public function mount(){
-        $this->store = Store::first();
+        $this->store = Store::first() ?? new Store(['info_swiper' => []]);
         $this->categories = Category::all();
         $this->loadProducts();
     }
@@ -33,7 +33,6 @@ class StoreShow extends Component
 
     public function setCategory($categoryId){
 
-        
         $this->selectedCategory = $categoryId;
         $this->loadProducts();
 

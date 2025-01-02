@@ -12,6 +12,7 @@ class Store extends Model
         'image',
         'banner',
         'advertise',
+        'info_swiper',
         'address',
         'whatsapp',
         'province_id',
@@ -26,6 +27,7 @@ class Store extends Model
 
     protected $casts = [
         'banner' => 'array',
+        'info_swiper' => 'array',
     ];
 
     public function getImageUrlAttribute()
