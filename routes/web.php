@@ -22,6 +22,7 @@ Route::get('/product/{slug}', ProductDetail::class)->name('product.detail');
 Route::get('/reward', RewardPage::class)->name('reward');
 Route::get('/info-bisnis', InfoBisnis::class)->name('info-bisnis');
 
+
 Route::middleware('guest')->group(function (){
     Route::get('/login', Login::class)->name('login');
     Route::get('/register', Register::class)->name('register');

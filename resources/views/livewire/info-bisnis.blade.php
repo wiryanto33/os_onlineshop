@@ -82,7 +82,7 @@
                                 <i class="bi bi-telephone text-white"></i>
                                 <span class="text-white">Daftar Via Whatsapp</span>
                             </div>
-                            <i class="bi bi-chevron-right text-gray-400"></i>
+                            <i class="bi bi-chevron-right text-white text-400"></i>
                         </a>
                     </div>
                 </div>
