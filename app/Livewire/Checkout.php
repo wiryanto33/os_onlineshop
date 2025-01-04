@@ -28,7 +28,7 @@ class Checkout extends Component
     public $selectedService = null;
     public $store;
 
-    protected $rajaongkir;
+    protected $rajaOngkir;
     protected $midtrans;
 
     public $shippingData = [
@@ -52,9 +52,9 @@ class Checkout extends Component
         'selectedService' => 'required'
     ];
 
-    public function boot(RajaOngkirService $rajaongkir, MidtransService $midtrans)
+    public function boot(RajaOngkirService $rajaOngkir, MidtransService $midtrans)
     {
-        $this->rajaongkir = $rajaongkir;
+        $this->rajaOngkir = $rajaOngkir;
         $this->midtrans = $midtrans;
     }
 
