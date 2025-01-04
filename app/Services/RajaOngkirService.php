@@ -3,11 +3,11 @@
 namespace App\Services;
 
 use Illuminate\Support\Facades\Http;
-use App\Models\RajaongkirSetting;
+use App\Models\RajaOngkirSetting;
 use Filament\Notifications\Notification;
 
 
-class RajaongkirService
+class RajaOngkirService
 {
     protected $apiKey;
     protected $baseUrl;
@@ -15,7 +15,7 @@ class RajaongkirService
 
     public function __construct()
     {
-        $this->setting = RajaongkirSetting::getActive();
+        $this->setting = RajaOngkirSetting::getActive();
 
         if (!$this->setting || !$this->setting->is_valid) {
             Notification::make()

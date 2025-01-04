@@ -8,7 +8,7 @@ use App\Models\OrderItem;
 use App\Models\RajaOngkirSetting;
 use App\Models\Store;
 use App\Notifications\NewOrderNotification;
-use App\Services\RajaongkirService;
+use App\Services\RajaOngkirService;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
 use PhpParser\Node\Stmt\TryCatch;
@@ -54,7 +54,7 @@ class Checkout extends Component
         'selectedService' => 'required'
     ];
 
-    public function boot(RajaongkirService $rajaongkir, MidtransService $midtrans)
+    public function boot(RajaOngkirService $rajaongkir, MidtransService $midtrans)
     {
         $this->rajaongkir = $rajaongkir;
         $this->midtrans = $midtrans;

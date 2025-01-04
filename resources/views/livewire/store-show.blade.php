@@ -9,12 +9,16 @@
             <!-- Additional required wrapper -->
             <div class="swiper-wrapper">
                 <!-- Slides -->
-                @foreach ($store->banner as $item)
-                    <div
-                        class="swiper-slide bg-gradient-to-br from-pink-500 to-red-500 flex items-center justify-center">
-                        <img src="{{ url('storage/' . $item) }}" alt="banner" class="w-full h-full object-cover">
-                    </div>
-                @endforeach
+                @if (!empty($store->banner) && is_array($store->banner))
+                    @foreach ($store->banner as $item)
+                        <div
+                            class="swiper-slide bg-gradient-to-br from-pink-500 to-red-500 flex items-center justify-center">
+                            <img src="{{ url('storage/' . $item) }}" alt="banner" class="w-full h-full object-cover">
+                        </div>
+                    @endforeach
+                @else
+                    <p>No banners available</p>
+                @endif
             </div>
         </div>
     </div>

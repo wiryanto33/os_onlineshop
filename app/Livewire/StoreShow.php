@@ -16,6 +16,7 @@ class StoreShow extends Component
     public $products;
 
     public function mount(){
+        $this->store = Store::first() ?? new Store(['banner' => []]);
         $this->store = Store::first() ?? new Store(['info_swiper' => []]);
         $this->categories = Category::all();
         $this->loadProducts();

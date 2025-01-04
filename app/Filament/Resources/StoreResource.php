@@ -29,7 +29,7 @@ class StoreResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $rajaongkir = new RajaongkirService();
+        $rajaongkir = new RajaOngkirService();
         $rajaongkirSetting = RajaongkirSetting::getActive();
 
         if (!$rajaongkirSetting?->is_valid) {
