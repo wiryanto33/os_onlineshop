@@ -29,10 +29,10 @@ class StoreResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $rajaongkir = new RajaOngkirService();
-        $rajaongkirSetting = RajaongkirSetting::getActive();
+        $rajaOngkirService = new RajaOngkirService();
+        $rajaOngkirSetting = RajaOngkirSetting::getActive();
 
-        if (!$rajaongkirSetting?->is_valid) {
+        if (!$rajaOngkirSetting?->is_valid) {
             Notification::make()
                 ->title('Rajaongkir API is not valid')
                 ->body('Please configure valid Rajaongkir settings before creating a store')
@@ -90,17 +90,17 @@ class StoreResource extends Resource
                             ->schema([
                                 Forms\Components\Select::make('province_id')
                                     ->label('Province')
-                                    ->options(fn() => $rajaongkir->getProvinces())
+                                    ->options(fn() => $rajaOngkirService->getProvinces())
                                     ->default(function ($record) {
                                         return $record?->province_id;
                                     })
                                     ->live()
-                                    ->afterStateUpdated(function (Get $get, Set $set, $state) use ($rajaongkir) {
+                                    ->afterStateUpdated(function (Get $get, Set $set, $state) use ($rajaOngkirService) {
                                         $set('regency_id', null);
                                         $set('regency_name', null);
 
                                         if ($state) {
-                                            $provinces = $rajaongkir->getProvinces();
+                                            $provinces = $rajaOngkirService->getProvinces();
                                             $set('province_name', $provinces[$state] ?? '');
                                         }
                                     })
@@ -108,21 +108,21 @@ class StoreResource extends Resource
                                 Forms\Components\Select::make('regency_id')
                                     ->label('Regency')
                                     ->required()
-                                    ->options(function (Get $get, $record) use ($rajaongkir) {
+                                    ->options(function (Get $get, $record) use ($rajaOngkirService) {
                                         $provinceId = $get('province_id') ?? $record?->province_id;
                                         if (!$provinceId) {
                                             return Collection::empty();
                                         }
 
-                                        return $rajaongkir->getCities($provinceId);
+                                        return $rajaOngkirService->getCities($provinceId);
                                     })
                                     ->default(function ($record) {
                                         return $record?->regency_id;
                                     })
                                     ->live()
-                                    ->afterStateUpdated(function (Get $get, Set $set, $state) use ($rajaongkir) {
+                                    ->afterStateUpdated(function (Get $get, Set $set, $state) use ($rajaOngkirService) {
                                         if ($state) {
-                                            $cities = $rajaongkir->getCities($get('province_id'));
+                                            $cities = $rajaOngkirService->getCities($get('province_id'));
                                             $set('regency_name', $cities[$state] ?? '');
                                         }
                                     }),
