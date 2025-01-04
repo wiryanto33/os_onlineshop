@@ -4,15 +4,13 @@ namespace App\Livewire;
 
 use App\Models\Cart;
 use App\Models\Order;
-use App\Models\OrderItem;
 use App\Models\RajaOngkirSetting;
 use App\Models\Store;
 use App\Notifications\NewOrderNotification;
-use App\Services\RajaOngkirService;
 use Illuminate\Support\Facades\Notification;
 use Livewire\Component;
-use PhpParser\Node\Stmt\TryCatch;
 use App\Services\MidtransService;
+use App\Services\RajaOngkirService;
 
 class Checkout extends Component
 {
