@@ -45,9 +45,7 @@
             </div>
 
             <div>
-                <input
-                    wire:model.live="shippingData.phone"
-                    type="tel"
+                <input wire:model.live="shippingData.phone" type="tel"
                     class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary"
                     placeholder="Contoh: 08123456789">
             </div>
@@ -72,66 +70,61 @@
                     @endforeach
                 </select>
             </div>
-
-            <div>
-                <select wire:model.live="starterShipping"
-                    class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary">
-                    <option value="">Ekspedisi</option>
-                    <option value="jne">JNE</option>
-                    <option value="pos">POS</option>
-                    <option value="tiki">TIKI</option>
-                </select>
-            </div>
-            <div>
-                <select wire:model.live="selectedService"
-                    class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary">
-                    <option value="">Pilih Layanan Pengiriman</option>
-                    @foreach ($shippingServices as $service)
-                        <option
-                            value="{{ json_encode([
-                                'code' => $service['code'],
-                                'service' => $service['service'],
-                                'etd' => $service['etd'],
-                                'cost' => $service['cost'],
-                                'description' => $service['description'],
-                                'name' => $service['name'],
-                            ]) }}">
-                            {{ $service['name'] }} - {{ $service['service'] }}
-                            {{ $service['etd'] }} hari - Rp. {{ number_format($service['cost']) }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
             @if ($isPro)
                 <div>
-                    <select
+                    <select wire:model.live="shippingData.subdistrict_id"
                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary">
                         <option value="">Pilih Kecamatan</option>
-                        <option value="1">Kebayoran Baru</option>
-                        <option value="2">Setia Budi</option>
-                        <option value="3">Mampang Prapatan</option>
+                        @foreach ($subdistricts as $id => $data)
+                            <option value="{{ $id }}">{{ $data['name'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @else
+                <div>
+                    <select wire:model.live="starterShipping"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary">
+                        <option value="">Ekspedisi</option>
+                        <option value="jne">JNE</option>
+                        <option value="pos">POS</option>
+                        <option value="tiki">TIKI</option>
                     </select>
                 </div>
             @endif
 
-
-            <div>
-                <textarea
-                    wire:model.live="shippingData.address_detail"
-                    class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary"
-                    rows="3" placeholder="Detail Alamat Nama jalan, nomor rumah, RT/RW, patokan"></textarea>
-            </div>
-
             <div class="space-y-4 mt-8">
-
+                <div>
+                    <select wire:model.live="selectedService"
+                        class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary">
+                        <option value="">Pilih Layanan Pengiriman</option>
+                        @foreach ($shippingServices as $service)
+                            <option
+                                value="{{ json_encode([
+                                    'code' => $service['code'],
+                                    'service' => $service['service'],
+                                    'etd' => $service['etd'],
+                                    'cost' => $service['cost'],
+                                    'description' => $service['description'],
+                                    'name' => $service['name'],
+                                ]) }}">
+                                {{ $service['name'] }} - {{ $service['service'] }}
+                                {{ $service['etd'] }} hari - Rp. {{ number_format($service['cost']) }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div>
-                    <textarea
-                        wire:model.live="shippingData.noted"
+                    <textarea wire:model.live="shippingData.noted"
                         class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary"
                         rows="2" placeholder="Catatan untuk pengiriman (opsional)"></textarea>
                 </div>
+            </div>
+
+            <div>
+                <textarea wire:model.live="shippingData.address_detail"
+                    class="w-full px-4 py-2 rounded-lg border border-gray-200 focus:ring-2 focus:ring-primary focus:border-primary"
+                    rows="3" placeholder="Detail Alamat Nama jalan, nomor rumah, RT/RW, patokan"></textarea>
             </div>
         </div>
     </div>
@@ -149,8 +142,7 @@
             </div>
         </div>
 
-        <button
-            wire:click="createOrder"
+        <button wire:click="createOrder"
             class="w-full h-12 flex items-center justify-center rounded-full bg-primary text-white font-medium hover:bg-primary/90 transition-colors">
             Buat Pesanan
         </button>
@@ -159,11 +151,8 @@
 
 @push('scripts')
     <!-- Include Midtrans Snap -->
-    <script type="text/javascript"
-        {{-- src="https://app.sandbox.midtrans.com/snap/snap.js" --}}
-        src="{{config('services.midtrans.snap_url')}}"
-        data-client-key="{{ config('services.midtrans.client_key') }}">
-    </script>
+    <script type="text/javascript" src="https://app.sandbox.midtrans.com/snap/snap.js"
+        data-client-key="{{ config('services.midtrans.client_key') }}"></script>
 
     <script>
         document.addEventListener('livewire:initialized', () => {
@@ -191,8 +180,12 @@
                                 alert('Pembayaran gagal! Silakan coba lagi.');
                             },
                             onClose: function() {
-                                console.log('customer closed the popup without finishing the payment');
-                                alert('Anda menutup halaman pembayaran sebelum menyelesaikan transaksi');
+                                console.log(
+                                    'customer closed the popup without finishing the payment'
+                                );
+                                alert(
+                                    'Anda menutup halaman pembayaran sebelum menyelesaikan transaksi'
+                                );
                                 window.location.href = `/`;
                             }
                         });
@@ -207,4 +200,3 @@
         });
     </script>
 @endpush
-

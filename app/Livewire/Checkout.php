@@ -17,18 +17,20 @@ class Checkout extends Component
 
     public $carts = [];
     public $total = 0;
-    public $totalItems = 0;
     public $isPro = false;
     public $provinces = [];
     public $cities = [];
+    public $subdistricts = [];
     public $isLoadingProvinces = false;
     public $shippingServices = [];
-    public $shippingCost = 0;
+    public $totalItems = 0;
     public $starterShipping;
+    public $mainShipping;
     public $selectedService = null;
+    public $shippingCost = 0;
     public $store;
 
-    protected $rajaOngkir;
+    protected $rajaongkir;
     protected $midtrans;
 
     public $shippingData = [
@@ -52,9 +54,9 @@ class Checkout extends Component
         'selectedService' => 'required'
     ];
 
-    public function boot(RajaOngkirService $rajaOngkir, MidtransService $midtrans)
+    public function boot(RajaOngkirService $rajaongkir, MidtransService $midtrans)
     {
-        $this->rajaOngkir = $rajaOngkir;
+        $this->rajaongkir = $rajaongkir;
         $this->midtrans = $midtrans;
     }
 
@@ -65,7 +67,7 @@ class Checkout extends Component
             return redirect()->route('home');
         }
         $this->store = Store::first();
-        $this->isPro = RajaongkirSetting::getActive()->isPro();
+        $this->isPro = RajaOngkirSetting::getActive()->isPro();
 
         if (auth()->check()) {
             $user = auth()->user();
@@ -99,16 +101,31 @@ class Checkout extends Component
         }
     }
 
+    public function updatedShippingDataCityId($value)
+    {
+        if ($value && $this->isPro) {
+            $this->subdistricts = $this->rajaongkir->getSubdistricts($value);
+            $this->shippingData['subdistrict_id'] = '';
+        }
+    }
+
     public function updatedStarterShipping($value)
     {
         if ($value && $this->shippingData['city_id']) {
+            $this->mainShipping = $value;
+            $this->loadShippingServices();
+        }
+    }
+
+    public function updatedShippingDataSubdistrictId($value)
+    {
+        if ($value) {
             $this->loadShippingServices();
         }
     }
 
     public function updatedSelectedService($value)
     {
-
         if ($value) {
             $serviceData = json_decode($value, true);
             $this->shippingCost = $serviceData['cost'] ?? 0;
@@ -126,16 +143,17 @@ class Checkout extends Component
         $store = Store::first();
 
         try {
-
             if (!$store || !$store->regency_id) {
                 throw new \Exception('Store location is not configured');
             }
 
             $this->shippingServices = $this->rajaongkir->getCost(
-                $store->regency_id,
-                $this->shippingData['city_id'],
+                $this->isPro ? $store->subdistrict_id : $store->regency_id,
+                $this->isPro ? 'subdistrict' : 'city',
+                $this->isPro ? $this->shippingData['subdistrict_id'] : $this->shippingData['city_id'],
+                $this->isPro ? 'subdistrict' : 'city',
                 $this->getWeight(),
-                $this->starterShipping
+                $this->isPro ? $setting->couriers : $this->mainShipping
             );
         } catch (\Exception $e) {
             $this->dispatch('showAlert', [
@@ -184,7 +202,7 @@ class Checkout extends Component
 
                 $order = Order::create([
                     'user_id' => auth()->id(),
-                    'order_number' => 'ONSV-' . strtoupper(uniqid()),
+                    'order_number' => 'ORD-' . strtoupper(uniqid()),
                     'subtotal' => $this->total,
                     'total_amount' => $this->total + $serviceData['cost'],
                     'status' => 'pending',
@@ -193,6 +211,9 @@ class Checkout extends Component
                     'phone' => $this->shippingData['phone'],
                     'province' => $this->provinces[$this->shippingData['province_id']],
                     'city' => $this->cities[$this->shippingData['city_id']],
+                    'subdistrict' => $this->isPro && !empty($this->shippingData['subdistrict_id'])
+                        ? $this->subdistricts[$this->shippingData['subdistrict_id']]['name']
+                        : null,
                     'address_detail' => $this->shippingData['address_detail'],
                     'shipping_code' => $serviceData['code'],
                     'shipping_service' => $serviceData['service'],
@@ -236,7 +257,6 @@ class Checkout extends Component
                 } else {
                     return redirect()->route('orders');
                 }
-
             } catch (\Exception $e) {
                 $this->dispatch('showAlert', [
                     'message' => $e->getMessage(),

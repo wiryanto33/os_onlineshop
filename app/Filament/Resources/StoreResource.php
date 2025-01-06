@@ -31,6 +31,7 @@ class StoreResource extends Resource
     {
         $rajaOngkirService = new RajaOngkirService();
         $rajaOngkirSetting = RajaOngkirSetting::getActive();
+        $isProVersion = $rajaOngkirSetting?->isPro() ?? false;
 
         if (!$rajaOngkirSetting?->is_valid) {
             Notification::make()
@@ -126,13 +127,43 @@ class StoreResource extends Resource
                                             $set('regency_name', $cities[$state] ?? '');
                                         }
                                     }),
-                                // Forms\Components\TextInput::make('subdistrict_id')
-                                //     ->numeric(),
+                                Forms\Components\Select::make('subdistrict_id')
+                                    ->label('District')
+                                    ->options(function (Get $get, $record) use ($rajaOngkirService) {
+                                        $cityId = $get('regency_id') ?? $record?->regency_id;
+                                        if (!$cityId) {
+                                            return Collection::empty();
+                                        }
+
+                                        return $rajaOngkirService->getSubdistricts($cityId)
+                                            ->map(fn($item) => $item['name'])
+                                            ->toArray();
+                                    })
+                                    ->default(function ($record) {
+                                        return $record?->subdistrict_id;
+                                    })
+                                    ->live()
+                                    ->required()
+                                    ->disabled(fn(Get $get, $record) => !($get('regency_id') ?? $record?->regency_id))
+                                    ->visible($isProVersion)
+                                    ->afterStateUpdated(function (Get $get, Set $set, $state) use ($rajaOngkirService) {
+                                        if ($state && $get('regency_id')) {
+                                            $subdistricts = $rajaOngkirService->getSubdistricts($get('regency_id'));
+                                            $subdistrictData = $subdistricts[$state] ?? null;
+
+                                            if ($subdistrictData) {
+                                                $set('subdistrict_name', $subdistrictData['name']);
+                                            }
+                                        } else {
+                                            $set('subdistrict_name', null);
+                                        }
+                                    }),
+
                                 Forms\Components\TextInput::make('address')
                                     ->maxLength(255),
                                 Forms\Components\Hidden::make('province_name'),
                                 Forms\Components\Hidden::make('regency_name'),
-                                // Forms\Components\Hidden::make('subdistrict_name'),
+                                Forms\Components\Hidden::make('subdistrict_name'),
                             ])
                     ]),
             ]);
@@ -140,6 +171,7 @@ class StoreResource extends Resource
 
     public static function table(Table $table): Table
     {
+        $isProVersion = RajaOngkirSetting::getActive()?->isPro() ?? false;
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
@@ -161,8 +193,12 @@ class StoreResource extends Resource
                 Tables\Columns\TextColumn::make('regency_name')
                     ->numeric()
                     ->sortable(),
-                // Tables\Columns\TextColumn::make('subdistrict_name')
-                //     ->searchable(),
+
+                ...($isProVersion ? [
+                    Tables\Columns\TextColumn::make('subdistrict_name')
+                        ->searchable(),
+                ] : []),
+
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

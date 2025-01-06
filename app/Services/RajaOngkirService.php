@@ -65,9 +65,35 @@ class RajaOngkirService
         }
     }
 
+    public function getSubdistricts($cityId)
+    {
+        $response = Http::withHeaders([
+            'key' => $this->apiKey
+        ])->get("{$this->baseUrl}/subdistrict", [
+            'city' => $cityId
+        ]);
+
+        if ($response->successful()) {
+            return collect($response->json('rajaongkir.results'))
+                ->mapWithKeys(function ($item) {
+                    return [
+                        $item['subdistrict_id'] => [
+                            'id' => $item['subdistrict_id'],
+                            'name' => $item['subdistrict_name'],
+                            'postal_code' => $item['postal_code']
+                        ]
+                    ];
+                });
+        }
+
+        return collect();
+    }
+
     public function getCost(
         $origin,
+        $originType,
         $destination,
+        $destinationType,
         $weight,
         $courier
     ) {
@@ -76,7 +102,9 @@ class RajaOngkirService
             'key' => $this->apiKey
         ])->post($this->baseUrl . '/cost', [
             'origin' => $origin,
+            'originType' => $originType,
             'destination' => $destination,
+            'destinationType' => $destinationType,
             'weight' => $weight,
             'courier' => $courier
         ]);
