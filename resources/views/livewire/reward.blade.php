@@ -12,28 +12,37 @@
     <!-- Reward Content -->
     <div class="pt-16 pb-6 px-4 space-y-6">
         <!-- Reward List -->
-        @foreach ($rewards as $reward)
+        @forelse ($rewards as $reward)
             <div class="space-y-4">
-                <!-- Sepeda Motor -->
-                <div class="flex justify-between items-center bg-gray-50 p-4 rounded-xl shadow-md hover:bg-gray-100">
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                            <img src="{{ url('storage/' . $reward->image) }}" alt="{{$reward->name}}">
+                <div class="items-center bg-gray-50 p-4 rounded-xl shadow-md hover:bg-gray-100">
+                    <div class="items-center gap-4">
+                        <div class="w-50 h-50 bg-gray-200 rounded-lg flex items-center justify-center">
+                            @if ($reward->image && file_exists(public_path('storage/' . $reward->image)))
+                                <img src="{{ url('storage/' . $reward->image) }}" alt="{{ $reward->name }}">
+                            @else
+                                <p class="text-sm text-gray-500">Gambar belum tersedia</p>
+                            @endif
                         </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-gray-800">{{$reward->name}}</h3>
-                            <p class="text-sm text-gray-500">{{$reward->point}} Poin</p>
-                        </div>
-                        <div>
-                            <p class="text-sm text-gray-500">{{$reward->description}}</p>
-                        </div>
+                    </div>
+                    <div class="flex items-center justify-between mt-4">
+                        <h3 class="text-lg font-semibold text-gray-800">{{ $reward->name }}</h3>
+                        <span class="px-3 py-1 text-sm font-medium text-white bg-yellow-600 rounded-full">
+                            {{ $reward->point }} POINT
+                        </span>
+                    </div>
+                    <div class="mt-2">
+                        <p class="text-sm text-gray-500">{{ $reward->description }}</p>
                     </div>
                 </div>
             </div>
-        @endforeach
+        @empty
+            <p class="text-center text-gray-500">Reward OneSevenStore belum tersedia</p>
+        @endforelse
+
 
         <!-- Note -->
-        <div class="bg-primary/10 border border-primary p-4 rounded-lg flex items-start gap-3 shadow-md">
+
+        <div class="bg-primary/10 border border-primary p-4 rounded-lg flex items-start gap-3 shadow-md ">
             <div class="w-20 h-8 bg-primary rounded-full flex items-center justify-center text-white">
                 <i class="bi bi-gift text-xl"></i>
             </div>
@@ -45,6 +54,9 @@
                 </p>
             </div>
         </div>
-
+        <div>
+            <br>
+            <br>
+        </div>
     </div>
 </div>
