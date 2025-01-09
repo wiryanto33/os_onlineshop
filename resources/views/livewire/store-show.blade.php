@@ -79,7 +79,7 @@
                                 class="absolute top-2.5 left-2.5 bg-primary/90 text-white text-xs font-medium px-3 py-1 rounded-full">
                                 Baru
                             </span>
-                            <img src="{{ $item->firstImageUrl }}" alt="Kaos Polos Motif Putih"
+                            <img src="{{ $item->firstImageUrl }}" alt="onesevenstore"
                                 class="w-full h-[180px] object-cover">
                         </div>
                     </a>

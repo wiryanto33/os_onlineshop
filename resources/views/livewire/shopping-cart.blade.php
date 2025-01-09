@@ -26,7 +26,7 @@
 
                         <!-- Product Image -->
                         <div class="flex-shrink-0">
-                            <img src="{{ $cart->product->first_image_url }}" alt="Kaos Polos Motif Putih"
+                            <img src="{{ $cart->product->first_image_url }}" alt="Skincare and Treatment"
                                 class="w-20 h-20 object-cover rounded-lg">
                         </div>
 
