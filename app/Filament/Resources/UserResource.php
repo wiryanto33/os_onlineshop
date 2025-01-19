@@ -23,26 +23,59 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('password')
-                    ->password()
-                    ->required(fn($context) => $context === 'create') // Only required during creation
-                    ->maxLength(255)
-                    ->dehydrated(fn($state) => $state !== null),
-                Forms\Components\TextInput::make('point')
-                    ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\Toggle::make('is_admin')
-                    ->required(),
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('password')
+                            ->password()
+                            ->required(fn($context) => $context === 'create') // Hanya diperlukan saat pembuatan
+                            ->maxLength(255)
+                            ->dehydrated(fn($state) => $state !== null),
+                        Forms\Components\TextInput::make('point')
+                            ->required()
+                            ->numeric()
+                            ->default(0),
+                        Forms\Components\Toggle::make('is_admin')
+                            ->required(),
+                    ])
+                    ->columns(2), // Mengatur jumlah kolom dalam grup ini
+                Forms\Components\Fieldset::make('Dokumen')
+                    ->schema([
+                        Forms\Components\FileUpload::make('foto_profile')
+                            ->image(),
+                        Forms\Components\FileUpload::make('foto_ktp')
+                            ->image(),
+                        Forms\Components\TextInput::make('address')
+                            ->maxLength(255)
+                    ]),
+                Forms\Components\Fieldset::make('Informasi Media Sosial')
+                    ->schema([
+                        Forms\Components\TextInput::make('facebook'),
+                        Forms\Components\TextInput::make('instagram'),
+                        Forms\Components\TextInput::make('tiktok'),
+                    ])
+                    ->columns(3), // Membagi field ini menjadi 3 kolom
+                Forms\Components\Card::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('phone')
+                            ->numeric(),
+                        Forms\Components\Select::make('role')
+                            ->options([
+                                'distributor' => 'Distributor',
+                                'stockist' => 'Stockist',
+                                'agent' => 'Agent'
+                            ]),
+                    ])
+                    ->columns(2),
             ]);
     }
+
 
     public static function table(Table $table): Table
     {
@@ -65,12 +98,21 @@ class UserResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\IconColumn::make('is_admin')
                     ->boolean(),
+                Tables\Columns\ImageColumn::make('foto_profile')
+                    ->label('Profile Picture')
+                    ->circular(),
+                Tables\Columns\TextColumn::make('role')
+                    ->searchable(),
+
             ])
             ->filters([
                 //
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
+
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

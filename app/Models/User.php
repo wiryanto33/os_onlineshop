@@ -27,7 +27,16 @@ class User extends Authenticatable implements FilamentUser, MustVerifyEmail
         'email',
         'password',
         'point',
+        'phone',
+        'address',
+        'foto_profile',
+        'foto_ktp',
+        'facebook',
+        'instagram',
+        'tiktok',
+        'role',
     ];
+
 
     /**
      * The attributes that should be hidden for serialization.

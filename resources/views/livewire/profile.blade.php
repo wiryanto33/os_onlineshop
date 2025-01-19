@@ -15,11 +15,16 @@
         <div class="bg-gradient-to-br from-primary to-secondary p-6">
             <div class="flex items-center gap-4">
                 <div class="w-20 h-20 rounded-full bg-white/20 flex items-center justify-center mt-10">
-                    <i class="bi bi-person text-3xl text-white"></i>
+                    @if ($foto_profile)
+                        <img src="{{ asset('storage/' . $foto_profile) }}" alt="Foto Profil"
+                            class="w-full h-full rounded-full object-cover">
+                    @else
+                        <i class="bi bi-person text-3xl text-white"></i>
+                    @endif
                 </div>
                 <div class="text-white">
-                    <h2 class="text-xl font-semibold">{{$name}}</h2>
-                    <p class="text-white/80">{{$email}}</p>
+                    <h2 class="text-xl font-semibold">{{ $name }}</h2>
+                    <p class="text-white/80">{{ $email }}</p>
                 </div>
             </div>
         </div>
@@ -28,8 +33,7 @@
         <div class="bg-white px-4 py-6 shadow-md rounded-lg mx-4 -mt-3 relative z-10">
             <div class="flex items-center justify-between">
                 <h3 class="text-lg font-semibold text-gray-800">Poin Pembelanjaan</h3>
-                <button class="text-sm px-4 py-2 bg-primary text-white rounded-full shadow-md hover:bg-primary/90">
-                </button>
+                <h3 class="text-xl font-semibold"> {{ strtoupper($role) }}</h3>
             </div>
             <div class="mt-4 flex items-center justify-between">
                 <div>
@@ -45,7 +49,7 @@
             <div class="space-y-2">
                 <h3 class="text-sm font-medium text-gray-500">Akun</h3>
                 <div class="space-y-1">
-                    <a href="https://wa.me/{{$whatsapp}}" target="_blank"
+                    <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
                         class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
                         <div class="flex items-center gap-3">
                             <i class="bi bi-question-circle text-primary"></i>
@@ -67,8 +71,7 @@
 
 
             <!-- Logout Button -->
-            <button
-                wire:click="logout"
+            <button wire:click="logout"
                 class="w-full mt-6 p-4 text-red-500 flex items-center justify-center gap-2 bg-red-50 rounded-xl hover:bg-red-100">
                 <i class="bi bi-box-arrow-right"></i>
                 <span>Keluar</span>
