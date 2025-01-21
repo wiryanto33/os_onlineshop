@@ -164,8 +164,21 @@ class StoreResource extends Resource
                                 Forms\Components\Hidden::make('province_name'),
                                 Forms\Components\Hidden::make('regency_name'),
                                 Forms\Components\Hidden::make('subdistrict_name'),
+                            ]),
+
+                        Forms\Components\Group::make()
+                            ->schema([
+                                Forms\Components\Section::make('kartu member')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('card_front')
+                                            ->image()
+                                            ->directory('stores/card_front'),
+                                        Forms\Components\FileUpload::make('card_back')
+                                            ->image()
+                                            ->directory('stores/card_back'),
+                                    ])
                             ])
-                    ]),
+                    ])
             ]);
     }
 

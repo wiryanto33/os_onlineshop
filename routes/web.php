@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MemberController;
 use App\Livewire\Auth\Login;
 use App\Livewire\Auth\Register;
 use App\Livewire\Checkout;
@@ -35,6 +36,7 @@ Route::middleware('auth')->group(function (){
     Route::get('/orders', OrderPage::class)->name('orders');
     Route::get('/order-detail/{orderNumber}', OrderDetail::class)->name('order-detail');
     Route::get('/payment-confirmation/{orderNumber}', PaymentConfirmationPage::class)->name('payment-confirmation');
+    Route::get('/download-card', [MemberController::class, 'downloadCard'])->name('download-card');
 });
 
 //setelah register berhasil user harus verified email sebelum cekout

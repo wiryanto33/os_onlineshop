@@ -20,7 +20,7 @@ class BisnisDetailResource extends Resource
 {
     protected static ?string $model = BisnisDetail::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
     protected static ?string $navigationGroup = 'Bisnis';
 
     public static function form(Form $form): Form

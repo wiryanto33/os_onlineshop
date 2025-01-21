@@ -40,7 +40,7 @@ class Register extends Component
         'facebook' => 'nullable|url',
         'instagram' => 'nullable|url',
         'tiktok' => 'nullable|url',
-        'role' => 'nullable|in:distributor,agent,stokist'
+        'role' => 'nullable|in:distributor,agent,stokist,reseller'
     ];
 
     protected $messages = [
@@ -61,7 +61,7 @@ class Register extends Component
         'facebook.url' => 'URL Facebook tidak valid',
         'instagram.url' => 'URL Instagram tidak valid',
         'tiktok.url' => 'URL TikTok tidak valid',
-        'role.in' => 'Role harus salah satu dari distributor, agent, atau stokist'
+        'role.in' => 'Role harus salah satu dari distributor, agent, atau stokist, reseller'
     ];
 
     public function updated($propertyName)

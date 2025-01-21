@@ -49,6 +49,24 @@
             <div class="space-y-2">
                 <h3 class="text-sm font-medium text-gray-500">Akun</h3>
                 <div class="space-y-1">
+                    @if (in_array($role, ['distributor', 'agent', 'stokist', 'reseller']))
+                        <a href="{{ route('download-card') }}"
+                            class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
+                            <div class="flex items-center gap-3">
+                                <i class="bi bi-download text-primary"></i>
+                                <span>Download Card Member</span>
+                            </div>
+                            <i class="bi bi-chevron-right text-gray-400"></i>
+                        </a>
+                    @else
+                        <span class="flex items-center justify-between p-4 bg-gray-50 rounded-xl text-gray-400">
+                            <div class="flex items-center gap-3">
+                                <i class="bi bi-download text-gray-400"></i>
+                                <span>Download Card Member</span>
+                            </div>
+                            <i class="bi bi-lock text-gray-400"></i>
+                        </span>
+                    @endif
                     <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
                         class="flex items-center justify-between p-4 bg-gray-50 rounded-xl hover:bg-gray-100">
                         <div class="flex items-center gap-3">

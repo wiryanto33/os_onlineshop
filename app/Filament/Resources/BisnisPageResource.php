@@ -18,7 +18,7 @@ class BisnisPageResource extends Resource
 {
     protected static ?string $model = BisnisPage::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-building-library';
     protected static ?string $navigationGroup = 'Bisnis';
 
     public static function form(Form $form): Form

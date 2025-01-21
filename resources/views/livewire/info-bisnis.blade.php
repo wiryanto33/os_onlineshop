@@ -76,14 +76,27 @@
 
                     <!-- Actions -->
                     <div class="p-5 border-t border-gray-200 bg-gray-50">
-                        <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
-                            class="flex items-center justify-between p-4 bg-primary rounded-xl hover:bg-primary/90 transition duration-300 max-w-[250px] mx-auto">
-                            <div class="flex items-center gap-3">
-                                <i class="bi bi-telephone text-white"></i>
-                                <span class="text-white">Daftar Via Whatsapp</span>
-                            </div>
-                            <i class="bi bi-chevron-right text-white text-400"></i>
-                        </a>
+                        @if (auth()->check())
+                            @if (!in_array(auth()->user()->role, ['distributor', 'agent', 'stokist', 'reseller']))
+                                <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
+                                    class="flex items-center justify-between p-4 bg-primary rounded-xl hover:bg-primary/90 transition duration-300 max-w-[250px] mx-auto">
+                                    <div class="flex items-center gap-3">
+                                        <i class="bi bi-telephone text-white"></i>
+                                        <span class="text-white">Daftar Via Whatsapp</span>
+                                    </div>
+                                    <i class="bi bi-chevron-right text-white text-400"></i>
+                                </a>
+                            @endif
+                        @else
+                            <a href="https://wa.me/{{ $whatsapp }}" target="_blank"
+                                class="flex items-center justify-between p-4 bg-primary rounded-xl hover:bg-primary/90 transition duration-300 max-w-[250px] mx-auto">
+                                <div class="flex items-center gap-3">
+                                    <i class="bi bi-telephone text-white"></i>
+                                    <span class="text-white">Daftar Via Whatsapp</span>
+                                </div>
+                                <i class="bi bi-chevron-right text-white text-400"></i>
+                            </a>
+                        @endif
                     </div>
                 </div>
             @endforeach

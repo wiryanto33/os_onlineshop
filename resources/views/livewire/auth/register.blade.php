@@ -29,7 +29,7 @@
                 @enderror
             </div>
 
-            <div>
+            <div class="relative">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Password</label>
                 <input type="{{ $showPassword ? 'text' : 'password' }}" wire:model.lazy="password"
                     placeholder="Masukkan password"
@@ -71,6 +71,7 @@
                     <option value="distributor">Distributor</option>
                     <option value="agent">Agent</option>
                     <option value="stokist">Stokist</option>
+                    <option value="reseller">Reseller</option>
                 </select>
                 @error('role')
                     <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
@@ -78,7 +79,7 @@
             </div>
 
             <!-- Additional Fields for Members -->
-            @if (in_array($role, ['distributor', 'agent', 'stokist']))
+            @if (in_array($role, ['distributor', 'agent', 'stokist', 'reseller']))
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Address</label>
                     <input type="text" wire:model.lazy="address" placeholder="Masukkan alamat"

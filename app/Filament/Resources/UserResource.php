@@ -48,8 +48,10 @@ class UserResource extends Resource
                 Forms\Components\Fieldset::make('Dokumen')
                     ->schema([
                         Forms\Components\FileUpload::make('foto_profile')
+                            ->directory('profiles')
                             ->image(),
                         Forms\Components\FileUpload::make('foto_ktp')
+                            ->directory('ktp')
                             ->image(),
                         Forms\Components\TextInput::make('address')
                             ->maxLength(255)
@@ -69,7 +71,8 @@ class UserResource extends Resource
                             ->options([
                                 'distributor' => 'Distributor',
                                 'stockist' => 'Stockist',
-                                'agent' => 'Agent'
+                                'agent' => 'Agent',
+                                'reseller' => 'Reseller'
                             ]),
                     ])
                     ->columns(2),

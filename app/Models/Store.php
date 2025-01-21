@@ -14,6 +14,8 @@ class Store extends Model
         'advertise',
         'info_swiper',
         'address',
+        'card_front',
+        'card_back',
         'whatsapp',
         'province_id',
         'regency_id',
