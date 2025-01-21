@@ -26,7 +26,7 @@ class MemberController extends Controller
         // dd($data);
 
         $pdf = Pdf::loadView('member.card', $data);
-        return $pdf->download('member.pdf');
+        return $pdf->stream('member.pdf');
         // return $pdf->download('member_card.pdf');
     }
 }
