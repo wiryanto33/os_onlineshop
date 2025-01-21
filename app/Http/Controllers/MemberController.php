@@ -18,9 +18,9 @@ class MemberController extends Controller
             'email' => $user->email,
             'role' => strtoupper($user->role),
             'address' => $user->address,
-            'foto_profile' => $user->foto_profile ? public_path('storage/' . $user->foto_profile) : null,
-            'card_back' => $store->card_back ? public_path('storage/' . $store->card_back) : null,
-            'card_front' => $store->card_front ? public_path('storage/' . $store->card_front) : null
+            'foto_profile' => $user->foto_profile ? storage_path('app/public/' . $user->foto_profile) : null,
+            'card_back' => $store->card_back ? storage_path('app/public/' . $store->card_back) : null,
+            'card_front' => $store->card_front ? storage_path('app/public/' . $store->card_front) : null
         ];
 
         // dd($data);
