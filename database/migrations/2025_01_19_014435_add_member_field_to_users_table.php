@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('facebook')->nullable();
             $table->string('instagram')->nullable();
             $table->string('tiktok')->nullable();
-            $table->enum('role', ['distributor', 'agent', 'stokist', 'reseller'])->nullable();
+            $table->enum('role', ['distributor', 'agent', 'stokist'])->nullable();
         });
     }
 

@@ -23,8 +23,6 @@ class MemberController extends Controller
             'card_front' => $store->card_front ? storage_path('app/public/' . $store->card_front) : null
         ];
 
-        // dd($data);
-
         $pdf = Pdf::loadView('member.card', $data);
         return $pdf->stream('member.pdf');
         // return $pdf->download('member_card.pdf');

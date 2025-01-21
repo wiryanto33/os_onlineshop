@@ -17,6 +17,7 @@ class StatsOverview extends BaseWidget
         $distributor = User::where('role', 'distributor')->count();
         $agent = User::where('role', 'agent')->count();
         $stockist = User::where('role', 'stokist')->count();
+        $reseller = User::where('role', 'reseller')->count();
 
         $pemasukan = Order::where('payment_status', 'paid')->sum('total_amount');
         $pending = Order::where('payment_status', 'unpaid')->sum('total_amount');
@@ -25,6 +26,7 @@ class StatsOverview extends BaseWidget
         return [
             Stat::make('Distributor Member', $distributor),
             Stat::make('Agent Member', $agent),
+            Stat::make('Reseller Member', $reseller),
             Stat::make('Stockist Member', $stockist),
             Stat::make('Total Order', $totalOrder),
             Stat::make('Total Penjualan', 'Rp ' . number_format($pemasukan, 0, ',', '.')),
